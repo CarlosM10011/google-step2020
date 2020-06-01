@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Adds a random fact to the page.
- */
+/** Adds a random fact to the page. */
 const addRandomFact = () => {
   const facts = [
     "Our air is composed of mostly nitrogen.", "Moore's Law is an observation.",
