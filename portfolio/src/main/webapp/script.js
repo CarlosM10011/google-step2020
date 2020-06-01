@@ -15,7 +15,7 @@
 /**
  * Adds a random fact to the page.
  */
-function addRandomFact() {
+const addRandomFact = () => {
   const facts = [
     "Our air is composed of mostly nitrogen.", "Moore's Law is an observation.",
     "The Summit supercomputer can reach up to 200 petaFLOPS."
