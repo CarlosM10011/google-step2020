@@ -4,15 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <title>My Portfolio - Under Construction</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <link rel="/stylesheet" href="/static/css/style.css">
 </head>
 
 <body>
-    <nav id="top-nav-bar">
-        <a href="/">Home</a>
-        <a href="/random.html">random generator</a>
-    </nav>
+    <jsp:include page="include/top_nav_bar.jsp"></jsp:include>
     <main id="content">
         <h1>Carlos</h1>
         <h2>About Me</h2>
@@ -25,9 +21,10 @@
                 this Wikipedia article</a>, which explains it.</p>
         <p>I normally do not force Windows to crash on a daily basis, but here
             is a screenshot captured by VMware Workstation.</p>
-        <img src="/images/crash.png" alt="Windows 10 frozen on a BSOD.">
+        <img src="/static/images/crash.png" alt="Windows 10 frozen on a BSOD.">
     </main>
     <a href="/#top-nav-bar">Back to top</a>
+    <script src="/static/js/script.js"></script>
 </body>
 
 </html>

@@ -4,20 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Generate a random fact</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 
 <body>
-    <nav id="top-nav-bar">
-        <a href="/">Home</a>
-        <a href="/random.html">random generator</a>
-    </nav>
+    <jsp:include page="include/top_nav_bar.jsp"></jsp:include>
     <main id="content">
         <p>Click below to get a random fact!</p>
         <button onclick="addRandomFact()">Click It</button>
         <div id="fact-container"></div>
     </main>
+    <script src="/static/js/script.js"></script>
 </body>
 
 </html>
