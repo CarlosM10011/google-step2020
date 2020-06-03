@@ -14,9 +14,20 @@
 
 /** Adds a random fact to the page. */
 const addRandomFact = async () => {
-  const response = await fetch('/random-fact');
-  const fact = await response.text();
-  // Add it to the page.
   const factContainer = document.getElementById('fact-container');
-  factContainer.innerText = fact;
+  try {
+    const response = await fetch('/random-fact');
+    if (response.status < 200 ||
+        response.status > 299) {  // HTTP codes in the 200 range are okay.
+      throw response.status;
+    }
+    const fact = await response.text();
+    // Add it to the page.
+    factContainer.innerText = fact;
+  } catch (e) {
+    console.error('Exception thrown.');
+    console.error(e);
+    factContainer.innerText =
+        'Sorry, an error occured. Please try again later.';
+  }
 }
