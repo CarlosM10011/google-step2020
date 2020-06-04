@@ -43,7 +43,7 @@ const addComments =
       const subjectElement = newComment.getElementById('subject');
       const bodyElement = newComment.getElementById('body');
       subjectElement.textContent =
-          '${rawComments[i].name} on ${rawComments[i].created}';
+          `${rawComments[i].name} on ${rawComments[i].created}`;
       bodyElement.textContent = rawComments[i].message;
       commentsContainer.appendChild(newComment);
     }
