@@ -12,17 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/** Adds a random fact to the page. */
-const addRandomFact = () => {
-  const facts = [
-    "Our air is composed of mostly nitrogen.", "Moore's Law is an observation.",
-    "The Summit supercomputer can reach up to 200 petaFLOPS."
-  ];
-
-  // Pick a random fact.
-  const fact = facts[Math.floor(Math.random() * facts.length)];
-
-  // Add it to the page.
-  const factContainer = document.getElementById('fact-container');
-  factContainer.innerText = fact;
-}
+/** Appends top nav bar in html body */
+document.write('<nav id="top-nav-bar">')
+document.write('<a href="/">Home</a>')
+document.write('<a href="/random.html">random generator</a>')
+document.write('</nav>')
