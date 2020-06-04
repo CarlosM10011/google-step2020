@@ -41,9 +41,9 @@ const addComments =
     for (let i = 0; i < rawComments.length; i++) {
       const newComment = commentTemplate.content.cloneNode(true);
       const subjectElement = newComment.getElementById('subject');
-      const bodyElement = newComment.getElementById('body');
       subjectElement.textContent =
           `${rawComments[i].name} on ${rawComments[i].created}`;
+      const bodyElement = newComment.getElementById('body');
       bodyElement.textContent = rawComments[i].message;
       commentsContainer.appendChild(newComment);
     }
