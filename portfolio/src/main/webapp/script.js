@@ -26,3 +26,37 @@ function addRandomGreeting() {
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
 }
+
+const addComments =
+    async () => {
+  try {
+    const commentTemplate = document.getElementById('comment-template');
+    const commentsContainer = document.getElementById('comments-container');
+    const response = await fetch('/data');
+    if (response.status < 200 ||
+        response.status > 299) {  // HTTP error codes in the 200 range are okay.
+      throw response.status;
+    }
+    const rawComments = await response.json();
+    for (let i = 0; i < rawComments.length; i++) {
+      const newComment = commentTemplate.content.cloneNode(true);
+      const subjectElement = newComment.getElementById('subject');
+      const bodyElement = newComment.getElementById('body');
+      subjectElement.textContent =
+          rawComments[i].name + ' on ' + rawComments[i].created;
+      bodyElement.textContent = rawComments[i].message;
+      commentsContainer.appendChild(newComment);
+    }
+  } catch (e) {
+    console.error('Error:');
+    console.error(e);
+    commentsContainer.innerText =
+        'An error occured loading comments. Please try again later.';
+    return;
+  }
+}
+
+                /** At the monent, this only loads comments */
+                window.onload = () => {
+  addComments();
+}
