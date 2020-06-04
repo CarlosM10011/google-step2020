@@ -48,7 +48,6 @@ const addComments =
       commentsContainer.appendChild(newComment);
     }
   } catch (e) {
-    console.error('Error:');
     console.error(e);
     commentsContainer.innerText =
         'An error occured loading comments. Please try again later.';
