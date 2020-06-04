@@ -15,7 +15,8 @@
 package com.google.sps.servlets;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,15 +28,18 @@ import javax.servlet.http.HttpServletResponse;
 public class RandomFactServlet extends HttpServlet {
 
   private final String CONTENT_TYPE = "text/html;";
-  private ArrayList<String> facts = new ArrayList<String>();
+  private List<String> facts =
+      Arrays.asList(
+          new String[] {
+            "Our air is composed of mostly nitrogen.",
+            "Moore's Law is an observation.",
+            "The Summit supercomputer can reach up to 200 petaFLOPS."
+          });
   private final Random rand = new Random();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType(CONTENT_TYPE);
-    facts.add("Our air is composed of mostly nitrogen.");
-    facts.add("Moore's Law is an observation.");
-    facts.add("The Summit supercomputer can reach up to 200 petaFLOPS.");
     response.getWriter().println(facts.get(rand.nextInt(facts.size())));
   }
 }
