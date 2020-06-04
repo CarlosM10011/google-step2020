@@ -15,6 +15,7 @@
 package com.google.sps.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,14 +26,16 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/random-fact")
 public class RandomFactServlet extends HttpServlet {
 
+  private final String CONTENT_TYPE = "text/html;";
+  private ArrayList<String> facts = new ArrayList<String>();
+  private final Random rand = new Random();
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html;");
-    String[] facts = new String[3];
-    facts[0] = "Our air is composed of mostly nitrogen.";
-    facts[1] = "Moore's Law is an observation.";
-    facts[2] = "The Summit supercomputer can reach up to 200 petaFLOPS.";
-    Random rand = new Random();
-    response.getWriter().println(facts[rand.nextInt(facts.length)]);
+    response.setContentType(CONTENT_TYPE);
+    facts.add("Our air is composed of mostly nitrogen.");
+    facts.add("Moore's Law is an observation.");
+    facts.add("The Summit supercomputer can reach up to 200 petaFLOPS.");
+    response.getWriter().println(facts.get(rand.nextInt(facts.size())));
   }
 }
