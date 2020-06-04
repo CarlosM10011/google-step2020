@@ -30,14 +30,12 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Hard coded comment data for now.
-    Comment[] comments = new Comment[3];
-    for (int i = 0; i < 3; i++) {
-      comments[i] =
-          new Comment(
-              "Carlos" + Integer.toString(i + 1),
-              new Date(),
-              "This is comment number " + Integer.toString(i + 1));
-    }
+    Comment[] comments =
+        new Comment[] {
+          new Comment("Fred", new Date(), "This is comment number 1"),
+          new Comment("George", new Date(), "This is comment number 2"),
+          new Comment("Ron", new Date(), "This is comment number 3")
+        };
     Gson gson = new Gson();
     String output = gson.toJson(comments);
     response.setContentType("text/json;");
