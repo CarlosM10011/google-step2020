@@ -27,8 +27,7 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 }
 
-const addComments =
-    async () => {
+const addComments = async () => {
   try {
     const commentTemplate = document.getElementById('comment-template');
     const commentsContainer = document.getElementById('comments-container');
@@ -53,9 +52,9 @@ const addComments =
         'An error occured loading comments. Please try again later.';
     return;
   }
-}
+};
 
-                /** At the monent, this only loads comments */
-                window.onload = () => {
+/** At the monent, this only loads comments */
+window.onload = () => {
   addComments();
-}
+};
