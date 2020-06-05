@@ -32,11 +32,10 @@ public class RandomFactServlet extends HttpServlet {
   private final List<String> facts =
       Collections.unmodifiableList(
           Arrays.asList(
-              new String[] {
                 "Our air is composed of mostly nitrogen.",
                 "Moore's Law is an observation.",
                 "The Summit supercomputer can reach up to 200 petaFLOPS."
-              }));
+              ));
   private final Random rand = new Random();
 
   @Override
