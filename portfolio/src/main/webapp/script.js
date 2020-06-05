@@ -54,7 +54,7 @@ const addComments = async () => {
   }
 };
 
-/** At the monent, this only loads comments */
+/** At the monent, this only loads comments. */
 window.onload = () => {
   addComments();
 };
