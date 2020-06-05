@@ -15,8 +15,8 @@
 /** Adds a random fact to the page. */
 const addRandomFact = async () => {
   const factContainer = document.getElementById('fact-container');
+  const response = await fetch('/random-fact');
   try {
-    const response = await fetch('/random-fact');
     if (response.status < 200 ||
         response.status > 299) {  // HTTP codes in the 200 range are okay.
       throw response.status;
