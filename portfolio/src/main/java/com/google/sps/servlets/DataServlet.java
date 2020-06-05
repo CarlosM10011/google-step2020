@@ -17,6 +17,8 @@ package com.google.sps.servlets;
 import com.google.gson.Gson;
 import com.google.sps.data.Comment;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,16 +29,20 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
+  // Hard coded comment data for now.
+  private final ArrayList<Comment> comments =
+      new ArrayList<Comment>(
+          Arrays.asList(
+              new Comment[] {
+                new Comment("Fred", new Date(), "This is comment number 1"),
+                new Comment("George", new Date(), "This is comment number 2"),
+                new Comment("Ron", new Date(), "This is comment number 3")
+              }));
+
+  private final Gson gson = new Gson();
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Hard coded comment data for now.
-    Comment[] comments =
-        new Comment[] {
-          new Comment("Fred", new Date(), "This is comment number 1"),
-          new Comment("George", new Date(), "This is comment number 2"),
-          new Comment("Ron", new Date(), "This is comment number 3")
-        };
-    Gson gson = new Gson();
     String output = gson.toJson(comments);
     response.setContentType("text/json;");
     response.getWriter().println(output);
