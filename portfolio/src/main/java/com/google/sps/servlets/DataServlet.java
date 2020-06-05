@@ -34,11 +34,9 @@ public class DataServlet extends HttpServlet {
   private final List<Comment> comments =
       Collections.unmodifiableList(
           Arrays.asList(
-              new Comment[] {
-                new Comment("Fred", new Date(), "This is comment number 1"),
-                new Comment("George", new Date(), "This is comment number 2"),
-                new Comment("Ron", new Date(), "This is comment number 3")
-              }));
+              new Comment("Fred", new Date(), "This is comment number 1"),
+              new Comment("George", new Date(), "This is comment number 2"),
+              new Comment("Ron", new Date(), "This is comment number 3")));
 
   private final String CONTENT_TYPE = "text/json;";
   private final Gson gson = new Gson();
