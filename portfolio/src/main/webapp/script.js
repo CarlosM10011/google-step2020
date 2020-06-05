@@ -28,15 +28,16 @@ function addRandomGreeting() {
 }
 
 const addComments = async () => {
+  const commentsContainer = document.getElementById('comments-container');
   try {
-    const commentTemplate = document.getElementById('comment-template');
-    const commentsContainer = document.getElementById('comments-container');
     const response = await fetch('/data');
-    if (response.status < 200 ||
-        response.status > 299) {  // HTTP error codes in the 200 range are okay.
-      throw response.status;
+    if (!response.ok) {
+      throw new Error(
+          'Error occurred while fetching comment data.', response.status,
+          response.statusText);
     }
     const rawComments = await response.json();
+    const commentTemplate = document.getElementById('comment-template');
     for (let i = 0; i < rawComments.length; i++) {
       const newComment = commentTemplate.content.cloneNode(true);
       const subjectElement = newComment.getElementById('subject');
