@@ -29,15 +29,15 @@ public final class Comment {
     this.message = message;
   }
 
-  String getName() {
+  public String getName() {
     return this.name;
   }
 
-  String getMessage() {
+  public String getMessage() {
     return this.message;
   }
 
-  Date getCreated() {
+  public Date getCreated() {
     return this.created;
   }
 }
