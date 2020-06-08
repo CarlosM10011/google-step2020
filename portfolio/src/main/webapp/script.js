@@ -13,16 +13,21 @@
 // limitations under the License.
 
 /** Adds a random fact to the page. */
-const addRandomFact = () => {
-  const facts = [
-    "Our air is composed of mostly nitrogen.", "Moore's Law is an observation.",
-    "The Summit supercomputer can reach up to 200 petaFLOPS."
-  ];
-
-  // Pick a random fact.
-  const fact = facts[Math.floor(Math.random() * facts.length)];
-
-  // Add it to the page.
+const addRandomFact = async () => {
   const factContainer = document.getElementById('fact-container');
-  factContainer.innerText = fact;
+  const response = await fetch('/random-fact');
+  try {
+    if (response.status < 200 ||
+        response.status > 299) {  // HTTP codes in the 200 range are okay.
+      throw response.status;
+    }
+    const fact = await response.text();
+    // Add it to the page.
+    factContainer.innerText = fact;
+  } catch (e) {
+    console.error('Exception thrown.');
+    console.error(e);
+    factContainer.innerText =
+        'Sorry, an error occured. Please try again later.';
+  }
 }
