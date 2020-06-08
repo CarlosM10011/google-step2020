@@ -16,6 +16,15 @@
       <button onclick="addRandomGreeting()">Hello</button>
       <div id="fact-container"></div>
     </div>
+    <h1>Add a Comment</h1>
+    <p>Your feedback is greatly appreciated. Feel free to leave a comment below;
+      no abuse please :).</p>
+    <form action="/data" method="post">
+      <span>Name:</span> <input name="name" required> <br>
+      <span>Comment:</span> <br>
+      <textarea name="body" required></textarea> <br>
+      <button>Post</button>
+    </form>
     <section id="comments-container">
       <h1>Comments</h1>
       <template id="comment-template">
