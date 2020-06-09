@@ -12,19 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Adds a random greeting to the page.
- */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
-
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-
-  // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+/** Adds a random fact to the page. */
+const addRandomFact = async () => {
+  const factContainer = document.getElementById('fact-container');
+  const response = await fetch('/random-fact');
+  try {
+    if (response.status < 200 ||
+        response.status > 299) {  // HTTP codes in the 200 range are okay.
+      throw response.status;
+    }
+    const fact = await response.text();
+    // Add it to the page.
+    factContainer.innerText = fact;
+  } catch (e) {
+    console.error('Exception thrown.');
+    console.error(e);
+    factContainer.innerText =
+        'Sorry, an error occured. Please try again later.';
+  }
 }
 
 const addComments = async () => {
