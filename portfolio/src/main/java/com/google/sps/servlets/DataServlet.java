@@ -14,6 +14,12 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
 import com.google.sps.data.Comment;
 import java.io.IOException;
@@ -29,12 +35,22 @@ import javax.servlet.http.HttpServletResponse;
 public class DataServlet extends HttpServlet {
 
   private final ArrayList<Comment> comments = new ArrayList<Comment>();
+  private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
   private final String GET_CONTENT_TYPE = "text/json;";
   private final Gson gson = new Gson();
   private final String POST_REDIRECT_URL = "/";
+  private final Query query = new Query("Comment").addSort("created", SortDirection.DESCENDING);
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    this.comments.clear();
+    PreparedQuery results = this.datastore.prepare(this.query);
+    for (Entity comment : results.asIterable()) {
+      String name = (String) comment.getProperty("name");
+      Date created = new Date((long) comment.getProperty("created"));
+      String message = (String) comment.getProperty("message");
+      this.comments.add(new Comment(name, created, message));
+    }
     String output = gson.toJson(this.comments);
     response.setContentType(this.GET_CONTENT_TYPE);
     response.getWriter().println(output);
@@ -47,7 +63,12 @@ public class DataServlet extends HttpServlet {
     if (name == null || body == null) { // Someone sending a bad form.
       return;
     }
-    this.comments.add(new Comment(name, new Date(), body));
+    long created = System.currentTimeMillis();
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("name", name);
+    commentEntity.setProperty("created", created);
+    commentEntity.setProperty("message", body);
+    this.datastore.put(commentEntity);
     response.sendRedirect(this.POST_REDIRECT_URL);
   }
 }
