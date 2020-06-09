@@ -30,10 +30,22 @@ const addRandomFact = async () => {
     factContainer.innerText =
         'Sorry, an error occured. Please try again later.';
   }
-}
+};
 
-const addComments = async () => {
+/** Adds a new comment to the DOM. */
+const addComment = (comment) => {
   const commentsContainer = document.getElementById('comments-container');
+  const commentTemplate = document.getElementById('comment-template');
+  const newComment = commentTemplate.content.cloneNode(true);
+  const subjectElement = newComment.getElementById('subject');
+  subjectElement.textContent = `${comment.name} on ${comment.created}`;
+  const bodyElement = newComment.getElementById('body');
+  bodyElement.textContent = comment.message;
+  commentsContainer.appendChild(newComment);
+};
+
+/** Adds all comments saved on the server. */
+const addComments = async () => {
   try {
     const response = await fetch('/data');
     if (!response.ok) {
@@ -42,18 +54,12 @@ const addComments = async () => {
           response.statusText);
     }
     const rawComments = await response.json();
-    const commentTemplate = document.getElementById('comment-template');
-    for (let i = 0; i < rawComments.length; i++) {
-      const newComment = commentTemplate.content.cloneNode(true);
-      const subjectElement = newComment.getElementById('subject');
-      subjectElement.textContent =
-          `${rawComments[i].name} on ${rawComments[i].created}`;
-      const bodyElement = newComment.getElementById('body');
-      bodyElement.textContent = rawComments[i].message;
-      commentsContainer.appendChild(newComment);
-    }
+    rawComments.forEach((comment) => {
+      addComment(comment);
+    });
   } catch (e) {
     console.error(e);
+    const commentsContainer = document.getElementById('comments-container');
     commentsContainer.innerText =
         'An error occured loading comments. Please try again later.';
     return;
