@@ -31,3 +31,36 @@ const addRandomFact = async () => {
         'Sorry, an error occured. Please try again later.';
   }
 }
+
+const addComments = async () => {
+  const commentsContainer = document.getElementById('comments-container');
+  try {
+    const response = await fetch('/data');
+    if (!response.ok) {
+      throw new Error(
+          'Error occurred while fetching comment data.', response.status,
+          response.statusText);
+    }
+    const rawComments = await response.json();
+    const commentTemplate = document.getElementById('comment-template');
+    for (let i = 0; i < rawComments.length; i++) {
+      const newComment = commentTemplate.content.cloneNode(true);
+      const subjectElement = newComment.getElementById('subject');
+      subjectElement.textContent =
+          `${rawComments[i].name} on ${rawComments[i].created}`;
+      const bodyElement = newComment.getElementById('body');
+      bodyElement.textContent = rawComments[i].message;
+      commentsContainer.appendChild(newComment);
+    }
+  } catch (e) {
+    console.error(e);
+    commentsContainer.innerText =
+        'An error occured loading comments. Please try again later.';
+    return;
+  }
+};
+
+/** At the monent, this only loads comments. */
+window.onload = () => {
+  addComments();
+};
