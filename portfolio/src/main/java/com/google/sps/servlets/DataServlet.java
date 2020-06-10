@@ -42,8 +42,8 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String name = request.getParameter("name");
-    String body = request.getParameter("body");
+    final String name = request.getParameter("name");
+    final String body = request.getParameter("body");
     if (name == null || body == null) { // Someone sending a bad form.
       return;
     }
