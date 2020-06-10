@@ -44,10 +44,19 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     final String name = request.getParameter("name");
     final String body = request.getParameter("body");
-    if (name == null || body == null) { // Someone sending a bad form.
-      return;
+    if (!isSaneForm(name, body)) {
+      response.sendRedirect(this.POST_REDIRECT_URL);
     }
     this.comments.add(new Comment(name, new Date(), body));
     response.sendRedirect(this.POST_REDIRECT_URL);
+  }
+
+  /** Checks to see if the comment form sent via the html post is valid. */
+  private Boolean isSaneForm(String name, String body) {
+    if ((name != null && !name.isEmpty())
+        && (body != null && !body.isEmpty())) { // Someone sending a bad form.
+      return true;
+    }
+    return false;
   }
 }
