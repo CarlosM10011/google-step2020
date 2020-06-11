@@ -54,9 +54,9 @@ public class DataServlet extends HttpServlet {
     this.comments.clear();
     PreparedQuery results = this.datastore.prepare(this.query);
     for (Entity comment : results.asIterable()) {
-      final String name = (String) comment.getProperty(this.PROPERTY_COMMENT_NAME);
-      final Date created = new Date((long) comment.getProperty(this.PROPERTY_COMMENT_CREATED_NAME));
-      final String message = (String) comment.getProperty(this.PROPERTY_COMMENT_MESSAGE_NAME);
+      final String name = (String) comment.getProperty(PROPERTY_COMMENT_NAME);
+      final Date created = new Date((long) comment.getProperty(PROPERTY_COMMENT_CREATED_NAME));
+      final String message = (String) comment.getProperty(PROPERTY_COMMENT_MESSAGE_NAME);
       this.comments.add(new Comment(name, created, message));
     }
     String output = gson.toJson(this.comments);
@@ -66,16 +66,16 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    final String name = request.getParameter(this.POST_NAME_PARAMETER);
+    final String name = request.getParameter(POST_NAME_PARAMETER);
     final String body = request.getParameter(POST_MESSAGE_PARAMETER);
     if (name == null || body == null) { // Someone sending a bad form.
       return;
     }
     final long created = System.currentTimeMillis();
-    final Entity commentEntity = new Entity(this.COMMENT_ENTITY_NAME);
-    commentEntity.setProperty(this.PROPERTY_COMMENT_NAME, name);
-    commentEntity.setProperty(this.PROPERTY_COMMENT_CREATED_NAME, created);
-    commentEntity.setProperty(this.PROPERTY_COMMENT_MESSAGE_NAME, body);
+    final Entity commentEntity = new Entity(COMMENT_ENTITY_NAME);
+    commentEntity.setProperty(PROPERTY_COMMENT_NAME, name);
+    commentEntity.setProperty(PROPERTY_COMMENT_CREATED_NAME, created);
+    commentEntity.setProperty(PROPERTY_COMMENT_MESSAGE_NAME, body);
     this.datastore.put(commentEntity);
     response.sendRedirect(this.POST_REDIRECT_URL);
   }
