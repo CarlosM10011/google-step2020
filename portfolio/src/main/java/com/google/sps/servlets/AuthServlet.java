@@ -36,11 +36,7 @@ public class AuthServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     final AuthState authState = AuthStateFactory.getState();
     final String redirectUrl = request.getParameter(this.REDIRECT_URL_PARAMETER_NAME);
-    if (redirectUrl != null) {
-      authState.setRedirectUrl(redirectUrl);
-    } else {
-      authState.setRedirectUrl(this.DEFAULT_REDIRECT_URL);
-    }
+    authState.setRedirectUrl(redirectUrl != null ? redirectUrl : DEFAULT_REDIRECT_URL);
     response.setContentType(CONTENT_TYPE);
     response.getWriter().println(this.gson.toJson(authState.getStatus()));
   }
