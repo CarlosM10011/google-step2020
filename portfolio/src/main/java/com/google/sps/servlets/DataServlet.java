@@ -31,6 +31,8 @@ public class DataServlet extends HttpServlet {
   private final ArrayList<Comment> comments = new ArrayList<Comment>();
   private final String GET_CONTENT_TYPE = "text/json;";
   private final Gson gson = new Gson();
+  private final String POST_MESSAGE_PARAMETER = "body";
+  private final String POST_NAME_PARAMETER = "name";
   private final String POST_REDIRECT_URL = "/";
 
   @Override
@@ -42,8 +44,8 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    final String name = request.getParameter("name");
-    final String body = request.getParameter("body");
+    final String name = request.getParameter(POST_NAME_PARAMETER);
+    final String body = request.getParameter(POST_MESSAGE_PARAMETER);
     if (!isSaneForm(name, body)) {
       response.sendRedirect(this.POST_REDIRECT_URL);
     }
