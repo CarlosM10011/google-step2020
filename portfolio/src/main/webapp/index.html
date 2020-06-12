@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>My Portfolio - Under Construction</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
   </head>
 
   <body>
@@ -25,8 +25,9 @@
       <img src="/images/crash.png" alt="Windows 10 frozen on a BSOD.">
       <h1>Add a Comment</h1>
       <p>Your feedback is greatly appreciated. Feel free to leave a comment
-        below; no abuse please :).</p>
-      <form action="/data" method="post">
+        below; no abuse please :). If you don't see the form, you must log in.
+      </p>
+      <form action="/data" id="comments-form" method="post">
         <span>Name:</span> <input name="name" required> <br>
         <span>Comment:</span> <br>
         <textarea name="body" required></textarea> <br>
