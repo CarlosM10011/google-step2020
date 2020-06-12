@@ -47,7 +47,8 @@ public class DataServlet extends HttpServlet {
     final String name = request.getParameter(POST_NAME_PARAMETER);
     final String body = request.getParameter(POST_MESSAGE_PARAMETER);
     if (!isSaneForm(name, body)) {
-      response.sendRedirect(this.POST_REDIRECT_URL);
+      response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+      return;
     }
     this.comments.add(new Comment(name, new Date(), body));
     response.sendRedirect(this.POST_REDIRECT_URL);
