@@ -14,7 +14,7 @@
 
 package com.google.sps.data;
 
-/** Immutable class that holds user info */
+/** Immutable class that holds user info. */
 public final class AuthStatus {
 
   private final String email;
