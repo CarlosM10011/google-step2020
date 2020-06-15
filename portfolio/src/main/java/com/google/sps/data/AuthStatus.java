@@ -41,7 +41,7 @@ public final class AuthStatus {
     return this.nickname;
   }
 
-  public Boolean isLoggedIn() {
+  public boolean isLoggedIn() {
     return this.isLoggedIn;
   }
 }
