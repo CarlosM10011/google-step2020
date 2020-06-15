@@ -56,10 +56,7 @@ public class DataServlet extends HttpServlet {
 
   /** Checks to see if the comment form sent via the html post is valid. */
   private Boolean isSaneForm(String name, String body) {
-    if ((name != null && !name.isEmpty())
-        && (body != null && !body.isEmpty())) { // Someone sending a bad form.
-      return true;
-    }
-    return false;
+    return (name != null && !name.isEmpty())
+        && (body != null && !body.isEmpty()); // Someone sending a bad form.
   }
 }
