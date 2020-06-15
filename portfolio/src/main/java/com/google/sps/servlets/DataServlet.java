@@ -14,6 +14,12 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
 import com.google.sps.data.Comment;
 import java.io.IOException;
@@ -28,15 +34,31 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
+  private final String COMMENT_ENTITY_NAME = "Comment";
   private final ArrayList<Comment> comments = new ArrayList<Comment>();
+  private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
   private final String GET_CONTENT_TYPE = "text/json;";
   private final Gson gson = new Gson();
   private final String POST_MESSAGE_PARAMETER = "body";
   private final String POST_NAME_PARAMETER = "name";
   private final String POST_REDIRECT_URL = "/";
+  private final String PROPERTY_COMMENT_CREATED_NAME = "created";
+  private final String PROPERTY_COMMENT_MESSAGE_NAME = "message";
+  private final String PROPERTY_COMMENT_NAME = "name";
+  private final Query query =
+      new Query(this.COMMENT_ENTITY_NAME)
+          .addSort(this.PROPERTY_COMMENT_CREATED_NAME, SortDirection.DESCENDING);
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    this.comments.clear();
+    PreparedQuery results = this.datastore.prepare(this.query);
+    for (Entity comment : results.asIterable()) {
+      final String name = (String) comment.getProperty(this.PROPERTY_COMMENT_NAME);
+      final Date created = new Date((long) comment.getProperty(this.PROPERTY_COMMENT_CREATED_NAME));
+      final String message = (String) comment.getProperty(this.PROPERTY_COMMENT_MESSAGE_NAME);
+      this.comments.add(new Comment(name, created, message));
+    }
     String output = gson.toJson(this.comments);
     response.setContentType(this.GET_CONTENT_TYPE);
     response.getWriter().println(output);
@@ -50,7 +72,12 @@ public class DataServlet extends HttpServlet {
       response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid form input.");
       return;
     }
-    this.comments.add(new Comment(name, new Date(), body));
+    final long created = System.currentTimeMillis();
+    final Entity commentEntity = new Entity(this.COMMENT_ENTITY_NAME);
+    commentEntity.setProperty(this.PROPERTY_COMMENT_NAME, name);
+    commentEntity.setProperty(this.PROPERTY_COMMENT_CREATED_NAME, created);
+    commentEntity.setProperty(this.PROPERTY_COMMENT_MESSAGE_NAME, body);
+    this.datastore.put(commentEntity);
     response.sendRedirect(this.POST_REDIRECT_URL);
   }
 
