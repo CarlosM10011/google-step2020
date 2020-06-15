@@ -18,11 +18,11 @@ package com.google.sps.data;
 public final class AuthStatus {
 
   private final String email;
-  private final Boolean isLoggedIn;
+  private final boolean isLoggedIn;
   private final String nickname;
   private final String actionUrl;
 
-  public AuthStatus(String email, Boolean isLoggedIn, String nickname, String actionUrl) {
+  public AuthStatus(String email, boolean isLoggedIn, String nickname, String actionUrl) {
     this.email = email;
     this.isLoggedIn = isLoggedIn;
     this.nickname = nickname;
