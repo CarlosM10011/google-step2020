@@ -25,22 +25,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that generates a random quote. */
-@WebServlet("/random-fact")
+@WebServlet(Constants.RANDOM_FACT_SERVLET_PATH)
 public class RandomFactServlet extends HttpServlet {
 
-  private final String CONTENT_TYPE = "text/html;";
   private final List<String> facts =
       Collections.unmodifiableList(
           Arrays.asList(
-                "Our air is composed of mostly nitrogen.",
-                "Moore's Law is an observation.",
-                "The Summit supercomputer can reach up to 200 petaFLOPS."
-              ));
+              "Our air is composed of mostly nitrogen.",
+              "Moore's Law is an observation.",
+              "The Summit supercomputer can reach up to 200 petaFLOPS."));
   private final Random rand = new Random();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType(CONTENT_TYPE);
+    response.setContentType(Constants.HTML_CONTENT_TYPE);
     response.getWriter().println(facts.get(rand.nextInt(facts.size())));
   }
 }
