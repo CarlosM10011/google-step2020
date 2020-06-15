@@ -31,52 +31,52 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that returns all comment data. */
-@WebServlet("/data")
+@WebServlet(Constants.DATA_SERVLET_PATH)
 public class DataServlet extends HttpServlet {
 
-  private final String COMMENT_ENTITY_NAME = "Comment";
   private final ArrayList<Comment> comments = new ArrayList<Comment>();
   private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  private final String GET_CONTENT_TYPE = "text/json;";
   private final Gson gson = new Gson();
-  private final String POST_MESSAGE_PARAMETER = "body";
-  private final String POST_NAME_PARAMETER = "name";
-  private final String POST_REDIRECT_URL = "/";
-  private final String PROPERTY_COMMENT_CREATED_NAME = "created";
-  private final String PROPERTY_COMMENT_MESSAGE_NAME = "message";
-  private final String PROPERTY_COMMENT_NAME = "name";
   private final Query query =
-      new Query(this.COMMENT_ENTITY_NAME)
-          .addSort(this.PROPERTY_COMMENT_CREATED_NAME, SortDirection.DESCENDING);
+      new Query(Constants.COMMENT_ENTITY_NAME)
+          .addSort(Constants.PROPERTY_COMMENT_CREATED_NAME, SortDirection.DESCENDING);
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     this.comments.clear();
     PreparedQuery results = this.datastore.prepare(this.query);
     for (Entity comment : results.asIterable()) {
-      final String name = (String) comment.getProperty(PROPERTY_COMMENT_NAME);
-      final Date created = new Date((long) comment.getProperty(PROPERTY_COMMENT_CREATED_NAME));
-      final String message = (String) comment.getProperty(PROPERTY_COMMENT_MESSAGE_NAME);
+      final String name = (String) comment.getProperty(Constants.PROPERTY_COMMENT_NAME);
+      final Date created =
+          new Date((long) comment.getProperty(Constants.PROPERTY_COMMENT_CREATED_NAME));
+      final String message = (String) comment.getProperty(Constants.PROPERTY_COMMENT_MESSAGE_NAME);
       this.comments.add(new Comment(name, created, message));
     }
     String output = gson.toJson(this.comments);
-    response.setContentType(this.GET_CONTENT_TYPE);
+    response.setContentType(Constants.JSON_GET_CONTENT_TYPE);
     response.getWriter().println(output);
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    final String name = request.getParameter(POST_NAME_PARAMETER);
-    final String body = request.getParameter(POST_MESSAGE_PARAMETER);
-    if (name == null || body == null) { // Someone sending a bad form.
+    final String name = request.getParameter(Constants.COMMENT_POST_NAME_PARAMETER);
+    final String body = request.getParameter(Constants.COMMENT_POST_MESSAGE_PARAMETER);
+    if (!isSaneForm(name, body)) {
+      response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid form input.");
       return;
     }
     final long created = System.currentTimeMillis();
-    final Entity commentEntity = new Entity(COMMENT_ENTITY_NAME);
-    commentEntity.setProperty(PROPERTY_COMMENT_NAME, name);
-    commentEntity.setProperty(PROPERTY_COMMENT_CREATED_NAME, created);
-    commentEntity.setProperty(PROPERTY_COMMENT_MESSAGE_NAME, body);
+    final Entity commentEntity = new Entity(Constants.COMMENT_ENTITY_NAME);
+    commentEntity.setProperty(Constants.PROPERTY_COMMENT_NAME, name);
+    commentEntity.setProperty(Constants.PROPERTY_COMMENT_CREATED_NAME, created);
+    commentEntity.setProperty(Constants.PROPERTY_COMMENT_MESSAGE_NAME, body);
     this.datastore.put(commentEntity);
-    response.sendRedirect(this.POST_REDIRECT_URL);
+    response.sendRedirect(Constants.DEFAULT_POST_REDIRECT_URL);
+  }
+
+  /** Checks to see if the comment form sent via the html post is valid. */
+  private Boolean isSaneForm(String name, String body) {
+    return (name != null && !name.isEmpty())
+        && (body != null && !body.isEmpty()); // Someone sending a bad form.
   }
 }
