@@ -66,9 +66,10 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    final String name = request.getParameter(this.POST_NAME_PARAMETER);
+    final String name = request.getParameter(POST_NAME_PARAMETER);
     final String body = request.getParameter(POST_MESSAGE_PARAMETER);
-    if (name == null || body == null) { // Someone sending a bad form.
+    if (!isSaneForm(name, body)) {
+      response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid form input.");
       return;
     }
     final long created = System.currentTimeMillis();
@@ -78,5 +79,11 @@ public class DataServlet extends HttpServlet {
     commentEntity.setProperty(this.PROPERTY_COMMENT_MESSAGE_NAME, body);
     this.datastore.put(commentEntity);
     response.sendRedirect(this.POST_REDIRECT_URL);
+  }
+
+  /** Checks to see if the comment form sent via the html post is valid. */
+  private Boolean isSaneForm(String name, String body) {
+    return (name != null && !name.isEmpty())
+        && (body != null && !body.isEmpty()); // Someone sending a bad form.
   }
 }
