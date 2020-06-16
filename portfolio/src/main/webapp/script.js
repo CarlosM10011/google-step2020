@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import '/include/comments.js';
+
 /** Adds a random fact to the page. */
 const addRandomFact = async () => {
   const factContainer = document.getElementById('fact-container');
