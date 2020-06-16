@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import {PageController} from '/include/pagecontroller.js';
+
 /** Adds a random fact to the page. */
 const addRandomFact = async () => {
   const factContainer = document.getElementById('fact-container');
@@ -32,41 +34,8 @@ const addRandomFact = async () => {
   }
 };
 
-/** Adds a new comment to the DOM. */
-const addComment = (comment) => {
-  const commentsContainer = document.getElementById('comments-container');
-  const commentTemplate = document.getElementById('comment-template');
-  const newComment = commentTemplate.content.cloneNode(true);
-  const subjectElement = newComment.getElementById('subject');
-  subjectElement.textContent = `${comment.name} on ${comment.created}`;
-  const bodyElement = newComment.getElementById('body');
-  bodyElement.textContent = comment.message;
-  commentsContainer.appendChild(newComment);
-};
-
-/** Adds all comments saved on the server. */
-const addComments = async () => {
-  try {
-    const response = await fetch('/data');
-    if (!response.ok) {
-      throw new Error(
-          'Error occurred while fetching comment data.', response.status,
-          response.statusText);
-    }
-    const rawComments = await response.json();
-    rawComments.forEach((comment) => {
-      addComment(comment);
-    });
-  } catch (e) {
-    console.error(e);
-    const commentsContainer = document.getElementById('comments-container');
-    commentsContainer.innerText =
-        'An error occured loading comments. Please try again later.';
-    return;
-  }
-};
-
 /** At the monent, this only loads comments. */
 window.onload = () => {
-  addComments();
+  window.pageController = new PageController();
+  window.pageController.init();
 };
