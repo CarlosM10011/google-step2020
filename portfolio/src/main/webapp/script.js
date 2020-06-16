@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import {AuthState} from '/include/authstate.js';
+
 /** Adds a random fact to the page. */
 const addRandomFact = async () => {
   const factContainer = document.getElementById('fact-container');
@@ -66,7 +68,31 @@ const addComments = async () => {
   }
 };
 
+/**
+ * Checks to se if the user is logged in and updates the UI to reflect the
+ * login state.
+ */
+const refreshAuthStateAndUpdateUI = async () => {
+  try {
+    const authState = await new AuthState();
+    const actionLink = document.createElement('a');
+    const actionLinkHref = document.createAttribute('href');
+    actionLinkHref.value = authState.getActionUrl();
+    actionLink.setAttributeNode(actionLinkHref);
+    const actionLinkText = document.createTextNode(
+        (authState.isLoggedIn()) ? 'Sign Out' : 'Sign In With Google');
+    actionLink.appendChild(actionLinkText);
+    const navBarElement = document.getElementById('top-nav-bar');
+    navBarElement.appendChild(actionLink);
+    const commentsFormElement = document.getElementById('comments-form');
+    commentsFormElement.style.display = (authState.isLoggedIn()) ? '' : 'none';
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 /** At the monent, this only loads comments. */
 window.onload = () => {
   addComments();
+  refreshAuthStateAndUpdateUI();
 };
