@@ -17,17 +17,27 @@ package com.google.sps.servlets;
 /** Class holding shared constants across all servlets. */
 public final class Constants {
 
+  // Authentication.
+  public static final String AUTH_SERVLET_PATH = "/auth";
+  public static final String DEFAULT_AUTH_REDIRECT_URL = "/";
+  public static final String REDIRECT_AUTH_URL_PARAMETER_NAME = "redirect";
+
+  // User comments.
   public static final String COMMENT_ENTITY_NAME = "Comment";
   public static final String COMMENT_POST_MESSAGE_PARAMETER = "body";
   public static final String COMMENT_POST_NAME_PARAMETER = "name";
   public static final String DATA_SERVLET_PATH = "/data";
   public static final String DEFAULT_POST_REDIRECT_URL = "/";
-  public static final String HTML_CONTENT_TYPE = "text/html;";
-  public static final String JSON_GET_CONTENT_TYPE = "text/json;";
   public static final String PROPERTY_COMMENT_CREATED_NAME = "created";
   public static final String PROPERTY_COMMENT_MESSAGE_NAME = "message";
   public static final String PROPERTY_COMMENT_NAME = "name";
+
+  // Random facts.
   public static final String RANDOM_FACT_SERVLET_PATH = "/random-fact";
+
+  // Content types.
+  public static final String HTML_CONTENT_TYPE = "text/html;";
+  public static final String JSON_GET_CONTENT_TYPE = "text/json;";
 
   private Constants() {}
 }

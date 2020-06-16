@@ -24,20 +24,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that handles authentication. */
-@WebServlet("/auth")
+@WebServlet(Constants.AUTH_SERVLET_PATH)
 public class AuthServlet extends HttpServlet {
 
-  private final String CONTENT_TYPE = "application/json;";
-  private final String DEFAULT_REDIRECT_URL = "/";
   private final Gson gson = new Gson();
-  private final String REDIRECT_URL_PARAMETER_NAME = "redirect";
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     final AuthState authState = AuthStateFactory.getState();
-    final String redirectUrl = request.getParameter(this.REDIRECT_URL_PARAMETER_NAME);
-    authState.setRedirectUrl(redirectUrl != null ? redirectUrl : DEFAULT_REDIRECT_URL);
-    response.setContentType(CONTENT_TYPE);
+    final String redirectUrl = request.getParameter(Constants.REDIRECT_AUTH_URL_PARAMETER_NAME);
+    authState.setRedirectUrl(
+        redirectUrl != null ? redirectUrl : Constants.DEFAULT_AUTH_REDIRECT_URL);
+    response.setContentType(Constants.JSON_GET_CONTENT_TYPE);
     response.getWriter().println(this.gson.toJson(authState.getStatus()));
   }
 }
