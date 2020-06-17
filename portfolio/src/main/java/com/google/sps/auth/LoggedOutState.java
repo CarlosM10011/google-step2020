@@ -14,28 +14,13 @@
 
 package com.google.sps.auth;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 import com.google.sps.data.AuthStatus;
 
 /** Active state when a user is logged out. */
 public class LoggedOutState extends AuthState {
 
-  private String redirectUrl = null;
-  private final UserService userService = UserServiceFactory.getUserService();
-
   @Override
   public AuthStatus getStatus() {
     return new AuthStatus(null, false, null, userService.createLoginURL(this.redirectUrl));
-  }
-
-  @Override
-  public Boolean isLoggedIn() {
-    return this.userService.isUserLoggedIn();
-  }
-
-  @Override
-  public void setRedirectUrl(String url) {
-    this.redirectUrl = url;
   }
 }

@@ -14,10 +14,16 @@
 
 package com.google.sps.auth;
 
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.sps.data.AuthStatus;
 
 /** Abstract class of state of logged in user */
 public abstract class AuthState {
+
+  protected String redirectUrl = null;
+  protected final UserService userService = UserServiceFactory.getUserService();
+
   /**
    * Returns an object with info of the logged in user. Useful for serializing to json.
    *
@@ -26,8 +32,12 @@ public abstract class AuthState {
   public abstract AuthStatus getStatus();
 
   /** Returns true if the user is logged in. */
-  public abstract Boolean isLoggedIn();
+  public boolean isLoggedIn() {
+    return this.userService.isUserLoggedIn();
+  }
 
   /** Sets the redirect url for the browser post login/logout. */
-  public abstract void setRedirectUrl(String url);
+  public void setRedirectUrl(String url) {
+    this.redirectUrl = url;
+  }
 }
