@@ -53,9 +53,9 @@ public class DataServlet extends HttpServlet {
     ArrayList<Comment> comments = new ArrayList<Comment>();
     PreparedQuery results = this.datastore.prepare(this.query);
     for (Entity comment : results.asIterable()) {
-      final String name = (String) comment.getProperty(this.PROPERTY_COMMENT_NAME);
-      final Date created = new Date((long) comment.getProperty(this.PROPERTY_COMMENT_CREATED_NAME));
-      final String message = (String) comment.getProperty(this.PROPERTY_COMMENT_MESSAGE_NAME);
+      String name = (String) comment.getProperty(this.PROPERTY_COMMENT_NAME);
+      Date created = new Date((long) comment.getProperty(this.PROPERTY_COMMENT_CREATED_NAME));
+      String message = (String) comment.getProperty(this.PROPERTY_COMMENT_MESSAGE_NAME);
       this.comments.add(new Comment(name, created, message));
     }
     String output = gson.toJson(this.comments);
