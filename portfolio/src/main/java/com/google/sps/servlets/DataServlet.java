@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 public class DataServlet extends HttpServlet {
 
   private final String COMMENT_ENTITY_NAME = "Comment";
-  private final ArrayList<Comment> comments = new ArrayList<Comment>();
   private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
   private final String GET_CONTENT_TYPE = "text/json;";
   private final Gson gson = new Gson();
@@ -51,7 +50,7 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    this.comments.clear();
+    ArrayList<Comment> comments = new ArrayList<Comment>();
     PreparedQuery results = this.datastore.prepare(this.query);
     for (Entity comment : results.asIterable()) {
       final String name = (String) comment.getProperty(this.PROPERTY_COMMENT_NAME);
