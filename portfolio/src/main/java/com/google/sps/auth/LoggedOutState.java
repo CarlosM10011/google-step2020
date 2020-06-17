@@ -21,6 +21,14 @@ public class LoggedOutState extends AuthState {
 
   @Override
   public AuthStatus getStatus() {
-    return new AuthStatus(null, false, null, userService.createLoginURL(this.redirectUrl));
+    return new AuthStatus(
+        /** email= */
+        null,
+        /** isLoggedIn= */
+        false,
+        /** nickname= */
+        null,
+        /** actionUrl= */
+        userService.createLoginURL(this.redirectUrl));
   }
 }

@@ -22,9 +22,13 @@ public class LoggedInState extends AuthState {
   @Override
   public AuthStatus getStatus() {
     return new AuthStatus(
+        /** email= */
         userService.getCurrentUser().getNickname(),
+        /** isLoggedIn= */
         userService.isUserLoggedIn(),
+        /** nickname= */
         null,
+        /** actionUrl= */
         userService.createLogoutURL(this.redirectUrl));
   }
 }
