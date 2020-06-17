@@ -14,31 +14,28 @@
 
 package com.google.sps.servlets;
 
+import com.google.gson.Gson;
+import com.google.sps.auth.AuthState;
+import com.google.sps.auth.AuthStateFactory;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that generates a random quote. */
-@WebServlet(Constants.RANDOM_FACT_SERVLET_PATH)
-public class RandomFactServlet extends HttpServlet {
+/** Servlet that handles authentication. */
+@WebServlet(Constants.AUTH_SERVLET_PATH)
+public class AuthServlet extends HttpServlet {
 
-  private final List<String> facts =
-      Collections.unmodifiableList(
-          Arrays.asList(
-              "Our air is composed of mostly nitrogen.",
-              "Moore's Law is an observation.",
-              "The Summit supercomputer can reach up to 200 petaFLOPS."));
-  private final Random rand = new Random();
+  private final Gson gson = new Gson();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType(Constants.HTML_CONTENT_TYPE);
-    response.getWriter().println(facts.get(rand.nextInt(facts.size())));
+    final AuthState authState = AuthStateFactory.getState();
+    final String redirectUrl = request.getParameter(Constants.REDIRECT_AUTH_URL_PARAMETER_NAME);
+    authState.setRedirectUrl(
+        redirectUrl != null ? redirectUrl : Constants.DEFAULT_AUTH_REDIRECT_URL);
+    response.setContentType(Constants.JSON_GET_CONTENT_TYPE);
+    response.getWriter().println(this.gson.toJson(authState.getStatus()));
   }
 }
