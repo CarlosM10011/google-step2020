@@ -22,10 +22,6 @@ public class AuthStateFactory {
   /** Returns the authentication state to match the current user session. */
   public static AuthState getState() {
     final UserService userService = UserServiceFactory.getUserService();
-    if (userService.isUserLoggedIn()) {
-      return new LoggedInState();
-    } else {
-      return new LoggedOutState();
-    }
+    return userService.isUserLoggedIn() ? new LoggedInState() : new LoggedOutState();
   }
 }
