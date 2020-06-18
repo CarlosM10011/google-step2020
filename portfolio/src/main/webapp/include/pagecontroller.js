@@ -14,7 +14,7 @@
 
 /* @fileoverview Module of top level controller. */
 
-import {CommentsHandler} from '/include/comments.js';
+import {CommentsHandler} from '/include/commentshandler.js';
 
 /**
  * Controller class for UI.
